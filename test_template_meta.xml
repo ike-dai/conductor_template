@@ -20,4 +20,12 @@
       <ccm:z>2</ccm:z>
     </ccm:Node>
   </ccm:Nodes>
+  <ccm:Links>
+    <ccm:Link>
+      <ccm:Source>347@123</ccm:Source>
+      <ccm:Target ref="new_machine_id">
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+      </ccm:Target>
+    </ccm:Link>
+  </ccm:Links>
 </ccm:Editor>
