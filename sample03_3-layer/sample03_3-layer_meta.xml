@@ -94,19 +94,25 @@
     </ccm:Link>
     <ccm:Link>
       <ccm:Source ref="private_net1">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(3)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(3)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="ap-server">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Target>
     </ccm:Link>
     <ccm:Link>
       <ccm:Source ref="private_net1">
-        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(4)    </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(3) circle:nth-child(4)</ccm:Selector>
       </ccm:Source>
       <ccm:Target ref="db-server">
-        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)</ccm:Selector>
       </ccm:Target>
+    </ccm:Link>
+    <ccm:Link>
+      <ccm:Source ref="db-server">
+        <ccm:Selector>g:nth-child(1) g:nth-child(2)   </ccm:Selector>
+      </ccm:Source>
+      <ccm:Target ref="test_vol1" />
     </ccm:Link>
   </ccm:Links>
 </ccm:Editor>

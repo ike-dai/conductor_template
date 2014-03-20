@@ -25,6 +25,7 @@
         <cc:MachineFilter ref="sec_out_all_allow" />
         <cc:MachineFilter ref="sec_in_443" />
         <cc:MachineFilter ref="sec_in_10050" />
+        <cc:MachineFilter ref="sec_in_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="small-server-zabbix">
@@ -39,6 +40,10 @@
         <cc:MachineFilter ref="sec_in_80" />
         <cc:MachineFilter ref="sec_in_443" />
         <cc:MachineFilter ref="sec_in_tcp_53" />
+        <cc:MachineFilter ref="sec_in_icmp" />
+        <cc:MachineFilter ref="sec_in_udp_53" />
+        <cc:MachineFilter ref="sec_in_3128" />
+        <cc:MachineFilter ref="sec_in_22" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="ap-server">
@@ -55,6 +60,7 @@
         <cc:MachineFilter ref="sec_in_22_internal" />
         <cc:MachineFilter ref="sec_in_all_deny" />
         <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
     <cc:Machine id="db-server">
@@ -65,12 +71,18 @@
       <cc:NetworkInterfaces>
         <cc:NetworkInterface ref="private_net_g1" />
       </cc:NetworkInterfaces>
+      <cc:Volumes>
+        <cc:Volume ref="test_vol1">
+          <cc:MountPoint>/data</cc:MountPoint>
+        </cc:Volume>
+      </cc:Volumes>
       <cc:MachineFilters>
         <cc:MachineFilter ref="sec_in_22_internal" />
         <cc:MachineFilter ref="sec_in_10050" />
         <cc:MachineFilter ref="sec_in_5432" />
         <cc:MachineFilter ref="sec_in_all_deny" />
         <cc:MachineFilter ref="sec_out_all_allow" />
+        <cc:MachineFilter ref="sec_in_icmp" />
       </cc:MachineFilters>
     </cc:Machine>
   </cc:Machines>
@@ -268,11 +280,39 @@
       <cc:Source ref="private_net_g1" />
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
     <cc:MachineFilter id="sec_in_tcp_53">
       <cc:Protocol>tcp</cc:Protocol>
       <cc:Port>53</cc:Port>
       <cc:Direction>ingress</cc:Direction>
-      <cc:Source ref="dmz_g1" />
+      <cc:Source ref="private_net_g1" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_udp_53">
+      <cc:Protocol>udp</cc:Protocol>
+      <cc:Port>53</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="private_net_g1" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_3128">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>3128</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="private_net_g1" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:MachineFilter>
+    <cc:MachineFilter id="sec_in_22">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>22</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:MachineFilter>
     <cc:MachineFilter id="sec_in_8080">
@@ -322,6 +362,7 @@
         <cc:NetworkFilter ref="acl_in_80_to_pub" />
         <cc:NetworkFilter ref="acl_in_all_deny" />
         <cc:NetworkFilter ref="acl_out_all_allow" />
+        <cc:NetworkFilter ref="acl_in_icmp" />
       </cc:NetworkFilters>
       <cc:Routes>
         <cc:Route ref="route_all" />
@@ -342,6 +383,8 @@
         <cc:NetworkFilter ref="acl_in_80_pub_to_dmz" />
         <cc:NetworkFilter ref="acl_in_all_deny" />
         <cc:NetworkFilter ref="acl_out_all_allow" />
+        <cc:NetworkFilter ref="acl_in_icmp" />
+        <cc:NetworkFilter ref="acl_in_10050_priv_to_dmz" />
       </cc:NetworkFilters>
       <cc:Routes>
         <cc:Route ref="route_all" />
@@ -361,6 +404,7 @@
         <cc:NetworkFilter ref="acl_in_80_dmz_to_pri" />
         <cc:NetworkFilter ref="acl_in_all_deny" />
         <cc:NetworkFilter ref="acl_out_all_allow" />
+        <cc:NetworkFilter ref="acl_in_icmp" />
       </cc:NetworkFilters>
       <cc:Routes>
         <cc:Route ref="route_all" />
@@ -409,6 +453,20 @@
       <cc:Port>80</cc:Port>
       <cc:Direction>ingress</cc:Direction>
       <cc:Source ref="public_net_g1" />
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="acl_in_icmp">
+      <cc:Protocol>icmp</cc:Protocol>
+      <cc:Port>all</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source>all</cc:Source>
+      <cc:RuleAction>allow</cc:RuleAction>
+    </cc:NetworkFilter>
+    <cc:NetworkFilter id="acl_in_10050_priv_to_dmz">
+      <cc:Protocol>tcp</cc:Protocol>
+      <cc:Port>10050</cc:Port>
+      <cc:Direction>ingress</cc:Direction>
+      <cc:Source ref="private_net_g1" />
       <cc:RuleAction>allow</cc:RuleAction>
     </cc:NetworkFilter>
     <cc:NetworkFilter id="acl_in_80_dmz_to_pri">
